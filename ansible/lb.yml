@@ -1,0 +1,36 @@
+---
+- name: Configure Nginx load balancer
+  hosts: lb
+  become: yes
+  vars:
+    upstream_name: app_upstream
+    listen_port: 80
+    app_port: 80
+  tasks:
+    - name: Install Nginx
+      package:
+        name: nginx
+        state: present
+
+    - name: Build upstream server list from app group
+      set_fact:
+        upstream_servers: "{{ groups['app'] | map('extract', hostvars, ['ansible_host']) | list }}"
+
+    - name: Deploy LB config
+      template:
+        src: templates/lb_nginx.conf.j2
+        dest: /etc/nginx/conf.d/lb.conf
+      notify: Reload Nginx
+
+    - name: Ensure default page mentions LB
+      copy:
+        dest: /usr/share/nginx/html/index.html
+        content: |
+          <h1>Load Balancer</h1>
+          <p>Upstream targets: {{ upstream_servers | join(', ') }}</p>
+
+  handlers:
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: restarted

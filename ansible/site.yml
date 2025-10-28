@@ -1,0 +1,21 @@
+---
+- name: Install and start Nginx (all hosts)
+  hosts: all
+  become: yes
+  tasks:
+    - name: Ensure Nginx present
+      package:
+        name: nginx
+        state: present
+
+    - name: Start & enable Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Simple index page
+      copy:
+        dest: /usr/share/nginx/html/index.html
+        content: |
+          <h1>It works! {{ inventory_hostname }}</h1>

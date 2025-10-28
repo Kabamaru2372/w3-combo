@@ -1,0 +1,20 @@
+---
+- name: Configure app servers
+  hosts: app
+  become: yes
+  tasks:
+    - name: Install Nginx
+      package:
+        name: nginx
+        state: present
+
+    - name: Enable & start Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: true
+
+    - name: Render numbered index page
+      template:
+        src: templates/index.html.j2
+        dest: /usr/share/nginx/html/index.html

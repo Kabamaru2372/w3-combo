@@ -1,0 +1,8 @@
+<!doctype html>
+<html>
+  <head><meta charset="utf-8"><title>App {{ hostvars[inventory_hostname].app_id | default('1') }}</title></head>
+  <body>
+    <h1>Hello from App {{ hostvars[inventory_hostname].app_id | default('1') }}</h1>
+    <p>Host: {{ inventory_hostname }} | IP: {{ ansible_host }}</p>
+  </body>
+</html>

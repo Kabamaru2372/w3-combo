@@ -1,0 +1,3 @@
+.ssh/
+*.pem
+ansible/inventory.ini
