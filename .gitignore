@@ -1,3 +1,15 @@
-.ssh/
-*.pem
+# Ignore Terraform state + cache
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# Ignore dynamic files
 ansible/inventory.ini
+
+# Ignore SSH keys
+*.pem
+.ssh/
+
+# Other safety
+*.retry
